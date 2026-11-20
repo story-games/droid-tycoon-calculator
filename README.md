@@ -60,6 +60,8 @@ Made by **hckoalla** at **Story Games**.
 - [Discord](https://www.storygames.com.br/p/discord.html)
 - [Facebook](https://www.facebook.com/storydevgames/)
 - [Instagram](https://www.instagram.com/storydevgames/)
+- [X](https://x.com/storydevgames)
+- [itch.io](https://storydevgames.itch.io/)
 - [Website](https://www.storygames.com.br/)
 
 Fan-made tool. Not affiliated with Epic Games, Lucasfilm or Disney. Fortnite and Star Wars are trademarks of their respective owners.
