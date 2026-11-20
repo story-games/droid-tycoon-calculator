@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -117,6 +117,26 @@
   .rules h2 { font-size: 1rem; color: var(--scourge); }
   .rules li { margin-bottom: 6px; }
 
+  .credits {
+    background: var(--card);
+    padding: 12px 24px 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  }
+  .credits h2 { font-size: 1.1rem; color: var(--header); }
+  .credits a { color: var(--header); font-weight: 600; }
+  .social { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .social a {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: var(--header);
+    color: #fff;
+    text-decoration: none;
+  }
+  .social a:hover { opacity: .9; }
+  .disclaimer { margin-top: 20px; color: var(--muted); font-size: .8rem; }
+
   @media (max-width: 640px) {
     .inputs { grid-template-columns: 1fr; }
     th:nth-child(3), td:nth-child(3) { display: none; }
@@ -126,11 +146,12 @@
 <body>
 <main>
   <h1>Droid Tycoon Calculator</h1>
-  <p class="subtitle">Informe até 3 componentes para descobrir quais droids você pode fundir.</p>
+  <p class="subtitle">Enter up to 3 components to find out which droids you can fuse.</p>
 
   <nav class="tabs">
-    <button class="tab active" type="button" data-tab="standard">Padrão</button>
-    <button class="tab" type="button" data-tab="scourge">Flagelo (Scourge)</button>
+    <button class="tab active" type="button" data-tab="standard">Standard</button>
+    <button class="tab" type="button" data-tab="scourge">Scourge</button>
+    <button class="tab" type="button" data-tab="credits">Credits</button>
   </nav>
 
   <datalist id="components"></datalist>
@@ -138,10 +159,10 @@
   <!-- ===================== STANDARD (V1) ===================== -->
   <section class="panel" id="panel-standard">
     <section class="inputs">
-      <label>Componente 1 <input data-std-slot list="components" autocomplete="off" placeholder="ex: ARG"></label>
-      <label>Componente 2 <input data-std-slot list="components" autocomplete="off"></label>
-      <label>Componente 3 <input data-std-slot list="components" autocomplete="off"></label>
-      <button class="clear" id="std-clear" type="button">Limpar</button>
+      <label>Component 1 <input data-std-slot list="components" autocomplete="off" placeholder="e.g. ARG"></label>
+      <label>Component 2 <input data-std-slot list="components" autocomplete="off"></label>
+      <label>Component 3 <input data-std-slot list="components" autocomplete="off"></label>
+      <button class="clear" id="std-clear" type="button">Clear</button>
     </section>
 
     <section id="std-result" class="result">
@@ -152,8 +173,8 @@
     <table>
       <thead>
         <tr>
-          <th>Droid</th><th>Raridade</th><th>Tipo</th>
-          <th>Componente 1</th><th>Componente 2</th><th>Componente 3</th>
+          <th>Droid</th><th>Rarity</th><th>Type</th>
+          <th>Component 1</th><th>Component 2</th><th>Component 3</th>
         </tr>
       </thead>
       <tbody id="std-rows"></tbody>
@@ -164,18 +185,18 @@
   <section class="panel" id="panel-scourge" hidden>
     <section class="inputs">
       <div class="slot">
-        <label>Slot 1 (âncora) <input data-sc-slot list="components" autocomplete="off" placeholder="ex: ARG"></label>
-        <select data-sc-tier aria-label="Tier do slot 1"></select>
+        <label>Slot 1 (anchor) <input data-sc-slot list="components" autocomplete="off" placeholder="e.g. ARG"></label>
+        <select data-sc-tier aria-label="Slot tier 1"></select>
       </div>
       <div class="slot">
         <label>Slot 2 <input data-sc-slot list="components" autocomplete="off"></label>
-        <select data-sc-tier aria-label="Tier do slot 2"></select>
+        <select data-sc-tier aria-label="Slot tier 2"></select>
       </div>
       <div class="slot">
         <label>Slot 3 <input data-sc-slot list="components" autocomplete="off"></label>
-        <select data-sc-tier aria-label="Tier do slot 3"></select>
+        <select data-sc-tier aria-label="Slot tier 3"></select>
       </div>
-      <button class="clear" id="sc-clear" type="button">Limpar</button>
+      <button class="clear" id="sc-clear" type="button">Clear</button>
     </section>
 
     <section id="sc-result" class="result">
@@ -187,20 +208,42 @@
     <table>
       <thead>
         <tr>
-          <th>Droid Scourge</th><th>Raridade</th><th>Tipo</th>
-          <th>Slot 1 (Âncora Scourge)</th><th>Slot 2</th><th>Slot 3</th>
+          <th>Droid Scourge</th><th>Rarity</th><th>Type</th>
+          <th>Slot 1 (Scourge Anchor)</th><th>Slot 2</th><th>Slot 3</th>
         </tr>
       </thead>
       <tbody id="sc-rows"></tbody>
     </table>
 
     <section class="rules">
-      <h2>Regras (fonte: docs/v2.0.png)</h2>
+      <h2>Rules (source: docs/v2.0.png)</h2>
       <ul>
-        <li><strong>Slot 1 = Scourge.</strong> Scourge empata com Stellar no peso de raridade; o slot mais à esquerda desempata.</li>
-        <li><strong>Slots 2 e 3 só Kyber, Stellar ou Scourge.</strong> Kyber não ativado funciona. Base, Gold, Diamond, Rainbow ou Beskar ativam a regra do menor tier e estragam o Scourge.</li>
-        <li><strong>Ideal: 1 Scourge + 2 Kyber/Stellar.</strong> Economiza 2/3 do estoque de Scourge. 3 Scourge funciona, mas é desperdício.</li>
+        <li><strong>Slot 1 = Scourge.</strong> Scourge ties with Stellar in rarity weight; the leftmost slot breaks the tie.</li>
+        <li><strong>Slots 2 and 3: only Kyber, Stellar or Scourge.</strong> Non-activated Kyber works. Base, Gold, Diamond, Rainbow or Beskar trigger the lowest-tier rule and ruin the Scourge.</li>
+        <li><strong>Ideal: 1 Scourge + 2 Kyber/Stellar.</strong> Saves 2/3 of your Scourge stock. 3 Scourge works, but it is wasteful.</li>
       </ul>
+    </section>
+  </section>
+
+  <!-- ===================== CREDITS ===================== -->
+  <section class="panel" id="panel-credits" hidden>
+    <section class="credits">
+      <h2>Credits</h2>
+      <p>Made by <strong>hckoalla</strong> at <strong>Story Games</strong>.</p>
+      <p>
+        Recipe data:
+        <a href="https://docs.google.com/spreadsheets/d/1XHNAyen1vCPaDLuKN17lJYUkNHrCM-uXqtiDXD8O3Ls/edit?pli=1&gid=1#gid=1" target="_blank" rel="noopener">Star Wars Droid Tycoon - Fusion Recipes &amp; Scourge Equivalents</a>
+      </p>
+
+      <h2>Follow Story Games</h2>
+      <ul class="social">
+        <li><a href="https://www.storygames.com.br/p/discord.html" target="_blank" rel="noopener">Discord</a></li>
+        <li><a href="https://www.facebook.com/storydevgames/" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="https://www.instagram.com/storydevgames/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.storygames.com.br/" target="_blank" rel="noopener">Website</a></li>
+      </ul>
+
+      <p class="disclaimer">Fan-made tool. Not affiliated with Epic Games, Lucasfilm or Disney. Fortnite and Star Wars are trademarks of their respective owners.</p>
     </section>
   </section>
 </main>
@@ -228,7 +271,6 @@
     { name: "LOW-MO",   rarity: "Mythic",    type: "Astromech", components: ["A-LT", "A-LT", "LOADLIFTER"] },
   ];
 
-  const RARITY_PT = { Rare: "Raro", Epic: "Épico", Legendary: "Lendário", Mythic: "Mítico" };
   const ALL_COMPONENTS = [...new Set(RECIPES.flatMap(r => r.components))].sort();
 
   // ============ Shared matching logic (species — slot order does NOT matter) ============
@@ -277,7 +319,7 @@
         .join("");
       return `<tr>
         <td>${cellLabel ? "Scourge " : ""}${r.name}</td>
-        <td class="rarity ${r.rarity}">${RARITY_PT[r.rarity]}</td>
+        <td class="rarity ${r.rarity}">${r.rarity}</td>
         <td>${r.type}</td>
         ${cells}
       </tr>`;
@@ -305,14 +347,14 @@
     const matches = RECIPES.filter(r => recipeAccepts(r, selected));
 
     if (selected.length === 0) {
-      setResult(stdResult, { label: "Resultado", value: "Selecione um componente" });
+      setResult(stdResult, { label: "Result", value: "Select a component" });
     } else if (matches.length === 0) {
-      setResult(stdResult, { kind: "random", label: "Combinação não encontrada", value: "ALEATÓRIO" });
+      setResult(stdResult, { kind: "random", label: "Combination not found", value: "RANDOM" });
     } else if (selected.length === 3) {
       const d = matches[0];
-      setResult(stdResult, { kind: "match", label: "Fusão resultante", value: `${d.name} — ${RARITY_PT[d.rarity]} ${d.type}` });
+      setResult(stdResult, { kind: "match", label: "Fusion result", value: `${d.name} — ${d.rarity} ${d.type}` });
     } else {
-      setResult(stdResult, { label: "Possíveis droids", value: `${matches.length} receita${matches.length > 1 ? "s" : ""}` });
+      setResult(stdResult, { label: "Possible droids", value: `${matches.length} recipe${matches.length > 1 ? "s" : ""}` });
     }
 
     renderRows(stdRows, selected.length === 0 ? RECIPES : matches, selected);
@@ -345,30 +387,30 @@
     if (lower.length > 0) {
       return {
         kind: "fail",
-        value: "NÃO SAI SCOURGE",
-        note: `Tier inferior (${lower.map(t => TIERS.find(x => x.id === t).label).join(", ")}) ativa a regra do menor tier. Use só Kyber, Stellar ou Scourge.`,
+        value: "NOT SCOURGE",
+        note: `Lower tier (${lower.map(t => TIERS.find(x => x.id === t).label).join(", ")}) triggers the lowest-tier rule. Use only Kyber, Stellar or Scourge.`,
       };
     }
 
     const scourgeCount = tiers.filter(t => t === "SCOURGE").length;
     if (scourgeCount === 0) {
-      return { kind: "fail", value: "NÃO SAI SCOURGE", note: "Nenhum componente Scourge na fusão." };
+      return { kind: "fail", value: "NOT SCOURGE", note: "No Scourge component in the fusion." };
     }
 
     if (tiers[0] !== "SCOURGE") {
       return {
         kind: "warn",
-        value: "SCOURGE NÃO GARANTIDO",
-        note: "O documento só garante Scourge com o Scourge no Slot 1 (desempate pela esquerda contra Stellar). Mova o Scourge para o Slot 1.",
+        value: "SCOURGE NOT GUARANTEED",
+        note: "The source only guarantees Scourge with the Scourge in Slot 1 (left tie-breaker against Stellar). Move the Scourge to Slot 1.",
       };
     }
 
     const notes = {
-      1: "Montagem ideal: economiza 2/3 do seu estoque de Scourge.",
-      2: "Resultado confiável, mas consome 2 Scourge em vez de 1.",
-      3: "Scourge tier base. Ineficiente: consome 3 Scourge — prefira 1 Scourge + 2 Kyber/Stellar.",
+      1: "Ideal setup: saves 2/3 of your Scourge stock.",
+      2: "Reliable result, but uses 2 Scourge instead of 1.",
+      3: "Base-tier Scourge. Inefficient: uses 3 Scourge — prefer 1 Scourge + 2 Kyber/Stellar.",
     };
-    return { kind: "match", value: scourgeCount === 3 ? "SCOURGE (TIER BASE)" : "SCOURGE EQUIVALENTE", note: notes[scourgeCount] };
+    return { kind: "match", value: scourgeCount === 3 ? "SCOURGE (BASE TIER)" : "SCOURGE EQUIVALENT", note: notes[scourgeCount] };
   };
 
   const scInputs = [...document.querySelectorAll("[data-sc-slot]")];
@@ -391,21 +433,21 @@
     const matches = RECIPES.filter(r => recipeAccepts(r, selected));
 
     if (selected.length === 0) {
-      setResult(scResult, { label: "Resultado", value: "Selecione um componente", note: "Dica: coloque o componente Scourge no Slot 1." });
+      setResult(scResult, { label: "Result", value: "Select a component", note: "Tip: put the Scourge component in Slot 1." });
     } else if (matches.length === 0) {
-      setResult(scResult, { kind: "random", label: "Combinação não encontrada", value: "ALEATÓRIO" });
+      setResult(scResult, { kind: "random", label: "Combination not found", value: "RANDOM" });
     } else if (selected.length < 3) {
-      setResult(scResult, { label: "Possíveis droids", value: `${matches.length} receita${matches.length > 1 ? "s" : ""}` });
+      setResult(scResult, { label: "Possible droids", value: `${matches.length} recipe${matches.length > 1 ? "s" : ""}` });
     } else if (tiers.some(t => !t)) {
       const d = matches[0];
-      setResult(scResult, { label: `Droid: ${d.name}`, value: "Escolha o tier de cada slot", note: "O tier define se o resultado sai Scourge." });
+      setResult(scResult, { label: `Droid: ${d.name}`, value: "Choose each slot's tier", note: "The tier decides whether the result is Scourge." });
     } else {
       const d = matches[0];
       const tierResult = evaluateScourgeTier(tiers);
       const isScourge = tierResult.kind === "match";
       setResult(scResult, {
         kind: tierResult.kind,
-        label: `${isScourge ? "Scourge " : ""}${d.name} — ${RARITY_PT[d.rarity]} ${d.type}`,
+        label: `${isScourge ? "Scourge " : ""}${d.name} — ${d.rarity} ${d.type}`,
         value: tierResult.value,
         note: tierResult.note,
       });
