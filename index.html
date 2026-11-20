@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Droid Tycoon Calculator</title>
+<style>
+  :root {
+    --bg: #f4f5fb;
+    --card: #ffffff;
+    --header: #4a5a8c;
+    --accent: #dfe3fa;
+    --text: #1d2233;
+    --muted: #6b7290;
+    --rare: #3b82f6;
+    --epic: #a855f7;
+    --legendary: #f59e0b;
+    --mythic: #ef4444;
+    --scourge: #7f1d1d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  main { max-width: 1000px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { margin: 0 0 4px; font-size: 1.6rem; }
+  .subtitle { margin: 0 0 20px; color: var(--muted); font-style: italic; }
+
+  .tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--header); margin-bottom: 20px; }
+  .tab {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    background: var(--accent);
+    color: var(--header);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .tab.active { background: var(--header); color: #fff; }
+  .tab[data-tab="scourge"].active { background: var(--scourge); }
+  .panel[hidden] { display: none; }
+
+  .inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    gap: 12px;
+    align-items: end;
+    background: var(--card);
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+  }
+  .slot { display: flex; flex-direction: column; gap: 6px; }
+  label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: .85rem; color: var(--header); }
+  input, select {
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    background: #fff;
+  }
+  input { text-transform: uppercase; }
+  input:focus, select:focus { outline: none; border-color: var(--header); }
+  input.invalid { border-color: var(--mythic); }
+  button.clear {
+    padding: 10px 16px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    background: var(--header);
+    color: #fff;
+    cursor: pointer;
+  }
+  button.clear:hover { opacity: .9; }
+
+  .result {
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 10px;
+    background: var(--accent);
+    text-align: center;
+  }
+  .result .label { font-size: .8rem; font-weight: 700; color: var(--header); text-transform: uppercase; letter-spacing: .05em; }
+  .result .value { font-size: 1.8rem; font-weight: 800; margin-top: 6px; }
+  .result .note { margin-top: 8px; color: var(--muted); font-size: .9rem; }
+  .result.random, .result.fail { background: #fde2e2; }
+  .result.random .value, .result.fail .value { color: var(--mythic); }
+  .result.match { background: #dcfce7; }
+  .result.warn { background: #fef3c7; }
+  .result.warn .value { color: #b45309; }
+
+  table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+  th { background: var(--header); color: #fff; padding: 10px; font-size: .85rem; }
+  #panel-scourge th { background: var(--scourge); }
+  td { padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--accent); font-size: .9rem; }
+  td:first-child { font-weight: 700; text-align: left; }
+  td.hit { background: #fef9c3; font-weight: 700; }
+  td.anchor { font-weight: 700; }
+  .rarity { font-weight: 700; }
+  .rarity.Rare { color: var(--rare); }
+  .rarity.Epic { color: var(--epic); }
+  .rarity.Legendary { color: var(--legendary); }
+  .rarity.Mythic { color: var(--mythic); }
+
+  .rules {
+    margin-top: 20px;
+    background: var(--card);
+    padding: 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    font-size: .9rem;
+  }
+  .rules h2 { font-size: 1rem; color: var(--scourge); }
+  .rules li { margin-bottom: 6px; }
+
+  @media (max-width: 640px) {
+    .inputs { grid-template-columns: 1fr; }
+    th:nth-child(3), td:nth-child(3) { display: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Droid Tycoon Calculator</h1>
+  <p class="subtitle">Informe até 3 componentes para descobrir quais droids você pode fundir.</p>
+
+  <nav class="tabs">
+    <button class="tab active" type="button" data-tab="standard">Padrão</button>
+    <button class="tab" type="button" data-tab="scourge">Flagelo (Scourge)</button>
+  </nav>
+
+  <datalist id="components"></datalist>
+
+  <!-- ===================== STANDARD (V1) ===================== -->
+  <section class="panel" id="panel-standard">
+    <section class="inputs">
+      <label>Componente 1 <input data-std-slot list="components" autocomplete="off" placeholder="ex: ARG"></label>
+      <label>Componente 2 <input data-std-slot list="components" autocomplete="off"></label>
+      <label>Componente 3 <input data-std-slot list="components" autocomplete="off"></label>
+      <button class="clear" id="std-clear" type="button">Limpar</button>
+    </section>
+
+    <section id="std-result" class="result">
+      <div class="label"></div>
+      <div class="value"></div>
+    </section>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Droid</th><th>Raridade</th><th>Tipo</th>
+          <th>Componente 1</th><th>Componente 2</th><th>Componente 3</th>
+        </tr>
+      </thead>
+      <tbody id="std-rows"></tbody>
+    </table>
+  </section>
+
+  <!-- ===================== SCOURGE (V2) ===================== -->
+  <section class="panel" id="panel-scourge" hidden>
+    <section class="inputs">
+      <div class="slot">
+        <label>Slot 1 (âncora) <input data-sc-slot list="components" autocomplete="off" placeholder="ex: ARG"></label>
+        <select data-sc-tier aria-label="Tier do slot 1"></select>
+      </div>
+      <div class="slot">
+        <label>Slot 2 <input data-sc-slot list="components" autocomplete="off"></label>
+        <select data-sc-tier aria-label="Tier do slot 2"></select>
+      </div>
+      <div class="slot">
+        <label>Slot 3 <input data-sc-slot list="components" autocomplete="off"></label>
+        <select data-sc-tier aria-label="Tier do slot 3"></select>
+      </div>
+      <button class="clear" id="sc-clear" type="button">Limpar</button>
+    </section>
+
+    <section id="sc-result" class="result">
+      <div class="label"></div>
+      <div class="value"></div>
+      <div class="note"></div>
+    </section>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Droid Scourge</th><th>Raridade</th><th>Tipo</th>
+          <th>Slot 1 (Âncora Scourge)</th><th>Slot 2</th><th>Slot 3</th>
+        </tr>
+      </thead>
+      <tbody id="sc-rows"></tbody>
+    </table>
+
+    <section class="rules">
+      <h2>Regras (fonte: docs/v2.0.png)</h2>
+      <ul>
+        <li><strong>Slot 1 = Scourge.</strong> Scourge empata com Stellar no peso de raridade; o slot mais à esquerda desempata.</li>
+        <li><strong>Slots 2 e 3 só Kyber, Stellar ou Scourge.</strong> Kyber não ativado funciona. Base, Gold, Diamond, Rainbow ou Beskar ativam a regra do menor tier e estragam o Scourge.</li>
+        <li><strong>Ideal: 1 Scourge + 2 Kyber/Stellar.</strong> Economiza 2/3 do estoque de Scourge. 3 Scourge funciona, mas é desperdício.</li>
+      </ul>
+    </section>
+  </section>
+</main>
+
+<script>
+  // ============ Shared data — source: docs/v1.png (Standard Fusion Recipes) ============
+  // Scourge recipes (docs/v2.1.png) are the same 17 recipes with a tier layer — do NOT duplicate.
+  const RECIPES = [
+    { name: "WHL-EX",   rarity: "Rare",      type: "Worker",    components: ["ARG", "MOUSE", "MOUSE"] },
+    { name: "ZRO-TEC",  rarity: "Rare",      type: "Astromech", components: ["ID10", "ID10", "2BB"] },
+    { name: "BTL-R",    rarity: "Rare",      type: "Battle",    components: ["R9", "BDX", "B1 BATTLE"] },
+    { name: "N-UL",     rarity: "Epic",      type: "Worker",    components: ["B1 HEAVY", "GUNRUNNER", "BB"] },
+    { name: "SCRP-R",   rarity: "Epic",      type: "Astromech", components: ["GONK", "GROUNDMECH", "R6"] },
+    { name: "ARM-CORE", rarity: "Epic",      type: "Battle",    components: ["ARG", "ARG", "B2 HEAVY"] },
+    { name: "OPT-AR",   rarity: "Epic",      type: "Battle",    components: ["R2", "R2", "B2 SUPER"] },
+    { name: "RO-TOR",   rarity: "Legendary", type: "Worker",    components: ["BB9", "PIT", "B1 BATTLE"] },
+    { name: "FUS-3",    rarity: "Legendary", type: "Worker",    components: ["R7", "B-U4D", "B-U4D"] },
+    { name: "ORB-XL",   rarity: "Legendary", type: "Battle",    components: ["CB", "GUNRUNNER", "B2-RP"] },
+    { name: "QIK-BIT",  rarity: "Legendary", type: "Astromech", components: ["GROUNDMECH", "GROUNDMECH", "BB9"] },
+    { name: "RIV-3T",   rarity: "Mythic",    type: "Worker",    components: ["KX", "IG", "RIC"] },
+    { name: "LUG-G",    rarity: "Mythic",    type: "Worker",    components: ["LOADLIFTER", "ID10", "R5"] },
+    { name: "X-ONK",    rarity: "Mythic",    type: "Battle",    components: ["KX", "KX", "GONK"] },
+    { name: "SRV-0",    rarity: "Mythic",    type: "Battle",    components: ["RIC-1200", "B1 HEAVY", "B1 HEAVY"] },
+    { name: "AXL-POD",  rarity: "Mythic",    type: "Astromech", components: ["RIC", "BDX", "R7"] },
+    { name: "LOW-MO",   rarity: "Mythic",    type: "Astromech", components: ["A-LT", "A-LT", "LOADLIFTER"] },
+  ];
+
+  const RARITY_PT = { Rare: "Raro", Epic: "Épico", Legendary: "Lendário", Mythic: "Mítico" };
+  const ALL_COMPONENTS = [...new Set(RECIPES.flatMap(r => r.components))].sort();
+
+  // ============ Shared matching logic (species — slot order does NOT matter) ============
+  const normalize = v => v.trim().toUpperCase().replace(/\s+/g, " ");
+
+  const countOf = list => list.reduce((acc, c) => (acc[c] = (acc[c] || 0) + 1, acc), {});
+
+  // Quantity matters: ARG + ARG only matches recipes with 2x ARG.
+  const recipeAccepts = (recipe, selected) => {
+    const need = countOf(selected);
+    const have = countOf(recipe.components);
+    return Object.entries(need).every(([c, n]) => (have[c] || 0) >= n);
+  };
+
+  const highlightMask = (recipe, selected) => {
+    const pending = [...selected];
+    return recipe.components.map(c => {
+      const i = pending.indexOf(c);
+      if (i === -1) return false;
+      pending.splice(i, 1);
+      return true;
+    });
+  };
+
+  const readSlots = inputs => {
+    const values = inputs.map(i => normalize(i.value));
+    inputs.forEach((input, idx) => {
+      input.classList.toggle("invalid", values[idx] !== "" && !ALL_COMPONENTS.includes(values[idx]));
+    });
+    return values;
+  };
+
+  const setResult = (el, { kind = "", label, value, note = "" }) => {
+    el.className = `result ${kind}`.trim();
+    el.querySelector(".label").textContent = label;
+    el.querySelector(".value").textContent = value;
+    const noteEl = el.querySelector(".note");
+    if (noteEl) noteEl.textContent = note;
+  };
+
+  const renderRows = (tbody, recipes, selected, cellLabel) => {
+    tbody.innerHTML = recipes.map(r => {
+      const mask = highlightMask(r, selected);
+      const cells = r.components
+        .map((c, i) => `<td class="${[mask[i] && "hit", i === 0 && cellLabel && "anchor"].filter(Boolean).join(" ")}">${cellLabel ? cellLabel(c, i) : c}</td>`)
+        .join("");
+      return `<tr>
+        <td>${cellLabel ? "Scourge " : ""}${r.name}</td>
+        <td class="rarity ${r.rarity}">${RARITY_PT[r.rarity]}</td>
+        <td>${r.type}</td>
+        ${cells}
+      </tr>`;
+    }).join("");
+  };
+
+  document.getElementById("components").innerHTML =
+    ALL_COMPONENTS.map(c => `<option value="${c}">`).join("");
+
+  // ============ Tabs ============
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t === tab));
+      document.querySelectorAll(".panel").forEach(p => (p.hidden = p.id !== `panel-${tab.dataset.tab}`));
+    });
+  });
+
+  // ============ Standard tab (V1) ============
+  const stdInputs = [...document.querySelectorAll("[data-std-slot]")];
+  const stdResult = document.getElementById("std-result");
+  const stdRows = document.getElementById("std-rows");
+
+  const renderStandard = () => {
+    const selected = readSlots(stdInputs).filter(Boolean);
+    const matches = RECIPES.filter(r => recipeAccepts(r, selected));
+
+    if (selected.length === 0) {
+      setResult(stdResult, { label: "Resultado", value: "Selecione um componente" });
+    } else if (matches.length === 0) {
+      setResult(stdResult, { kind: "random", label: "Combinação não encontrada", value: "ALEATÓRIO" });
+    } else if (selected.length === 3) {
+      const d = matches[0];
+      setResult(stdResult, { kind: "match", label: "Fusão resultante", value: `${d.name} — ${RARITY_PT[d.rarity]} ${d.type}` });
+    } else {
+      setResult(stdResult, { label: "Possíveis droids", value: `${matches.length} receita${matches.length > 1 ? "s" : ""}` });
+    }
+
+    renderRows(stdRows, selected.length === 0 ? RECIPES : matches, selected);
+  };
+
+  stdInputs.forEach(i => i.addEventListener("input", renderStandard));
+  document.getElementById("std-clear").addEventListener("click", () => {
+    stdInputs.forEach(i => (i.value = ""));
+    renderStandard();
+    stdInputs[0].focus();
+  });
+
+  // ============ Scourge tab (V2) — source: docs/v2.0.png + docs/v2.1.png ============
+  const TIERS = [
+    { id: "SCOURGE", label: "Scourge" },
+    { id: "STELLAR", label: "Stellar" },
+    { id: "KYBER",   label: "Kyber" },
+    { id: "BESKAR",  label: "Beskar" },
+    { id: "RAINBOW", label: "Rainbow" },
+    { id: "DIAMOND", label: "Diamond" },
+    { id: "GOLD",    label: "Gold" },
+    { id: "BASE",    label: "Base" },
+  ];
+  // Rule 2 (Strict Filler): only these keep the Scourge outcome; anything else triggers "lowest-tier-matches".
+  const SCOURGE_SAFE_TIERS = ["SCOURGE", "STELLAR", "KYBER"];
+
+  // Evaluates the output TIER. Unlike species, slot position matters here (Rule 1: left-pedestal tie-breaker).
+  const evaluateScourgeTier = tiers => {
+    const lower = tiers.filter(t => !SCOURGE_SAFE_TIERS.includes(t));
+    if (lower.length > 0) {
+      return {
+        kind: "fail",
+        value: "NÃO SAI SCOURGE",
+        note: `Tier inferior (${lower.map(t => TIERS.find(x => x.id === t).label).join(", ")}) ativa a regra do menor tier. Use só Kyber, Stellar ou Scourge.`,
+      };
+    }
+
+    const scourgeCount = tiers.filter(t => t === "SCOURGE").length;
+    if (scourgeCount === 0) {
+      return { kind: "fail", value: "NÃO SAI SCOURGE", note: "Nenhum componente Scourge na fusão." };
+    }
+
+    if (tiers[0] !== "SCOURGE") {
+      return {
+        kind: "warn",
+        value: "SCOURGE NÃO GARANTIDO",
+        note: "O documento só garante Scourge com o Scourge no Slot 1 (desempate pela esquerda contra Stellar). Mova o Scourge para o Slot 1.",
+      };
+    }
+
+    const notes = {
+      1: "Montagem ideal: economiza 2/3 do seu estoque de Scourge.",
+      2: "Resultado confiável, mas consome 2 Scourge em vez de 1.",
+      3: "Scourge tier base. Ineficiente: consome 3 Scourge — prefira 1 Scourge + 2 Kyber/Stellar.",
+    };
+    return { kind: "match", value: scourgeCount === 3 ? "SCOURGE (TIER BASE)" : "SCOURGE EQUIVALENTE", note: notes[scourgeCount] };
+  };
+
+  const scInputs = [...document.querySelectorAll("[data-sc-slot]")];
+  const scTiers = [...document.querySelectorAll("[data-sc-tier]")];
+  const scResult = document.getElementById("sc-result");
+  const scRows = document.getElementById("sc-rows");
+
+  scTiers.forEach(select => {
+    select.innerHTML = `<option value="">— tier —</option>` +
+      TIERS.map(t => `<option value="${t.id}">${t.label}</option>`).join("");
+  });
+
+  // Optimal layout from docs/v2.1.png: first component as Scourge anchor, the rest as Kyber/Stellar filler.
+  const scourgeCellLabel = (component, index) => index === 0 ? `Scourge ${component}` : `Kyber/Stellar ${component}`;
+
+  const renderScourge = () => {
+    const values = readSlots(scInputs);
+    const tiers = scTiers.map(s => s.value);
+    const selected = values.filter(Boolean);
+    const matches = RECIPES.filter(r => recipeAccepts(r, selected));
+
+    if (selected.length === 0) {
+      setResult(scResult, { label: "Resultado", value: "Selecione um componente", note: "Dica: coloque o componente Scourge no Slot 1." });
+    } else if (matches.length === 0) {
+      setResult(scResult, { kind: "random", label: "Combinação não encontrada", value: "ALEATÓRIO" });
+    } else if (selected.length < 3) {
+      setResult(scResult, { label: "Possíveis droids", value: `${matches.length} receita${matches.length > 1 ? "s" : ""}` });
+    } else if (tiers.some(t => !t)) {
+      const d = matches[0];
+      setResult(scResult, { label: `Droid: ${d.name}`, value: "Escolha o tier de cada slot", note: "O tier define se o resultado sai Scourge." });
+    } else {
+      const d = matches[0];
+      const tierResult = evaluateScourgeTier(tiers);
+      const isScourge = tierResult.kind === "match";
+      setResult(scResult, {
+        kind: tierResult.kind,
+        label: `${isScourge ? "Scourge " : ""}${d.name} — ${RARITY_PT[d.rarity]} ${d.type}`,
+        value: tierResult.value,
+        note: tierResult.note,
+      });
+    }
+
+    renderRows(scRows, selected.length === 0 ? RECIPES : matches, selected, scourgeCellLabel);
+  };
+
+  scInputs.forEach(i => i.addEventListener("input", renderScourge));
+  scTiers.forEach(s => s.addEventListener("change", renderScourge));
+  document.getElementById("sc-clear").addEventListener("click", () => {
+    scInputs.forEach(i => (i.value = ""));
+    scTiers.forEach(s => (s.value = ""));
+    renderScourge();
+    scInputs[0].focus();
+  });
+
+  renderStandard();
+  renderScourge();
+</script>
+</body>
+</html>
