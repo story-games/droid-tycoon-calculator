@@ -91,8 +91,6 @@
   .result.random, .result.fail { background: #fde2e2; }
   .result.random .value, .result.fail .value { color: var(--mythic); }
   .result.match { background: #dcfce7; }
-  .result.warn { background: #fef3c7; }
-  .result.warn .value { color: #b45309; }
 
   table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
   th { background: var(--header); color: #fff; padding: 10px; font-size: .85rem; }
@@ -118,6 +116,7 @@
   }
   .rules h2 { font-size: 1rem; color: var(--scourge); }
   .rules li { margin-bottom: 6px; }
+  .rules .source { color: var(--muted); font-size: .8rem; }
 
   .credits {
     background: var(--card);
@@ -152,7 +151,7 @@
 
   <nav class="tabs">
     <button class="tab active" type="button" data-tab="standard">Standard</button>
-    <button class="tab" type="button" data-tab="scourge">Scourge</button>
+    <button class="tab" type="button" data-tab="scourge">Variant &amp; Scourge</button>
     <button class="tab" type="button" data-tab="credits">Credits</button>
   </nav>
 
@@ -183,11 +182,11 @@
     </table>
   </section>
 
-  <!-- ===================== SCOURGE (V2) ===================== -->
+  <!-- ===================== VARIANT & SCOURGE (V2) ===================== -->
   <section class="panel" id="panel-scourge" hidden>
     <section class="inputs">
       <div class="slot">
-        <label>Slot 1 (anchor) <input data-sc-slot list="components" autocomplete="off" placeholder="e.g. ARG"></label>
+        <label>Slot 1 <input data-sc-slot list="components" autocomplete="off" placeholder="e.g. ARG"></label>
         <select data-sc-tier aria-label="Slot tier 1"></select>
       </div>
       <div class="slot">
@@ -210,20 +209,22 @@
     <table>
       <thead>
         <tr>
-          <th>Droid Scourge</th><th>Rarity</th><th>Type</th>
-          <th>Slot 1 (Scourge Anchor)</th><th>Slot 2</th><th>Slot 3</th>
+          <th>Droid</th><th>Rarity</th><th>Type</th>
+          <th>Slot 1 (Scourge)</th><th>Slot 2 (Kyber/Stellar)</th><th>Slot 3 (Kyber/Stellar)</th>
         </tr>
       </thead>
       <tbody id="sc-rows"></tbody>
     </table>
 
     <section class="rules">
-      <h2>Rules (source: docs/images/scourge-rules.png)</h2>
+      <h2>Rules</h2>
       <ul>
-        <li><strong>Slot 1 = Scourge.</strong> Scourge ties with Stellar in rarity weight; the leftmost slot breaks the tie.</li>
-        <li><strong>Slots 2 and 3: only Kyber, Stellar or Scourge.</strong> Non-activated Kyber works. Base, Gold, Diamond, Rainbow or Beskar trigger the lowest-tier rule and ruin the Scourge.</li>
-        <li><strong>Ideal: 1 Scourge + 2 Kyber/Stellar.</strong> Saves 2/3 of your Scourge stock. 3 Scourge works, but it is wasteful.</li>
+        <li><strong>The lowest variant wins.</strong> Order, low to high: Default, Gold, Diamond, Rainbow, Beskar, Galactic, Stellar = Scourge, Kyber.</li>
+        <li><strong>Scourge ranks with Stellar</strong>, below Kyber. On a tie, the <strong>leftmost slot</strong> wins.</li>
+        <li><strong>Cheapest Scourge: 1 Scourge + 2 Kyber</strong>, in any order. With Stellar filler, the Scourge must be to the left of the Stellars.</li>
+        <li>Any variant below Stellar (Default to Galactic) takes over the result.</li>
       </ul>
+      <p class="source">Source: <a href="https://droidex.dubtrackr.win/guides/droid-fusion/" target="_blank" rel="noopener">Droidex fusion guide</a> (fan resource, v1.40.0). Not validated in-game by us.</p>
     </section>
   </section>
 
@@ -255,7 +256,7 @@
 <script>
   // ============ Shared data ============
   // Sources: docs/images/standard-recipes.png (original 17) + docs/images/standard-recipes-v3.png (11 new).
-  // Conflicts between the sheets follow the public guides: AXL-POD, SRV-0 and LOW-MO = Astromech.
+  // Names follow Droidex v1.40.0 (AXI-POD, SRV-O). LOW-MO type follows the older public guides (Astromech).
   // Scourge recipes (docs/images/scourge-recipes.png) reuse this list with a tier layer — do NOT duplicate.
   const RECIPES = [
     // Common (v3)
@@ -284,8 +285,8 @@
     { name: "RIV-3T",   rarity: "Mythic",    type: "Worker",    components: ["KX", "IG", "RIC"] },
     { name: "LUG-G",    rarity: "Mythic",    type: "Worker",    components: ["LOADLIFTER", "ID10", "R5"] },
     { name: "X-ONK",    rarity: "Mythic",    type: "Battle",    components: ["KX", "KX", "GONK"] },
-    { name: "SRV-0",    rarity: "Mythic",    type: "Battle",    components: ["RIC-1200", "B1 HEAVY", "B1 HEAVY"] },
-    { name: "AXL-POD",  rarity: "Mythic",    type: "Astromech", components: ["RIC", "BDX EXPLORER", "R7"] },
+    { name: "SRV-O",    rarity: "Mythic",    type: "Battle",    components: ["RIC-1200", "B1 HEAVY", "B1 HEAVY"] },
+    { name: "AXI-POD",  rarity: "Mythic",    type: "Astromech", components: ["RIC", "BDX EXPLORER", "R7"] },
     { name: "LOW-MO",   rarity: "Mythic",    type: "Astromech", components: ["A-LT", "A-LT", "LOADLIFTER"] },
     { name: "AX-L",     rarity: "Mythic",    type: "Battle",    components: ["MPH", "IG", "IG"] },
     { name: "MO-TRO",   rarity: "Mythic",    type: "Astromech", components: ["A-LT", "A-LT", "ECG"] },
@@ -389,50 +390,51 @@
     stdInputs[0].focus();
   });
 
-  // ============ Scourge tab (V2) — source: docs/images/scourge-rules.png + docs/images/scourge-recipes.png ============
-  const TIERS = [
-    { id: "SCOURGE", label: "Scourge" },
-    { id: "STELLAR", label: "Stellar" },
-    { id: "KYBER",   label: "Kyber" },
-    { id: "BESKAR",  label: "Beskar" },
-    { id: "RAINBOW", label: "Rainbow" },
-    { id: "DIAMOND", label: "Diamond" },
-    { id: "GOLD",    label: "Gold" },
-    { id: "BASE",    label: "Base" },
+  // ============ Variant & Scourge tab (V2) — source: Droidex fusion guide (v1.40.0) ============
+  // Output variant = the LOWEST input variant; on a tie, the LEFTMOST slot wins.
+  // Scourge has the same weight as Stellar (both below Kyber).
+  const TIERS = [ // listed high → low for the dropdown
+    { id: "KYBER",    label: "Kyber",    weight: 7 },
+    { id: "SCOURGE",  label: "Scourge",  weight: 6 },
+    { id: "STELLAR",  label: "Stellar",  weight: 6 },
+    { id: "GALACTIC", label: "Galactic", weight: 5 },
+    { id: "BESKAR",   label: "Beskar",   weight: 4 },
+    { id: "RAINBOW",  label: "Rainbow",  weight: 3 },
+    { id: "DIAMOND",  label: "Diamond",  weight: 2 },
+    { id: "GOLD",     label: "Gold",     weight: 1 },
+    { id: "DEFAULT",  label: "Default",  weight: 0 },
   ];
-  // Rule 2 (Strict Filler): only these keep the Scourge outcome; anything else triggers "lowest-tier-matches".
-  const SCOURGE_SAFE_TIERS = ["SCOURGE", "STELLAR", "KYBER"];
+  const tierOf = id => TIERS.find(t => t.id === id);
 
-  // Evaluates the output TIER. Unlike species, slot position matters here (Rule 1: left-pedestal tie-breaker).
-  const evaluateScourgeTier = tiers => {
-    const lower = tiers.filter(t => !SCOURGE_SAFE_TIERS.includes(t));
-    if (lower.length > 0) {
-      return {
-        kind: "fail",
-        value: "NOT SCOURGE",
-        note: `Lower tier (${lower.map(t => TIERS.find(x => x.id === t).label).join(", ")}) triggers the lowest-tier rule. Use only Kyber, Stellar or Scourge.`,
-      };
-    }
+  // Returns the winning slot index: lowest weight, leftmost on ties.
+  const resolveVariant = tiers => {
+    const weights = tiers.map(t => tierOf(t).weight);
+    return weights.indexOf(Math.min(...weights));
+  };
 
+  const explainVariant = tiers => {
+    const slot = resolveVariant(tiers);
+    const output = tiers[slot];
+    const label = tierOf(output).label;
     const scourgeCount = tiers.filter(t => t === "SCOURGE").length;
-    if (scourgeCount === 0) {
-      return { kind: "fail", value: "NOT SCOURGE", note: "No Scourge component in the fusion." };
+    const tiedWith = tiers.filter((t, i) => i !== slot && t !== output && tierOf(t).weight === tierOf(output).weight);
+    const tieNote = tiedWith.length ? `${label} ties with ${tierOf(tiedWith[0]).label}; Slot ${slot + 1} is further left, so it wins. ` : "";
+
+    if (output === "SCOURGE") {
+      const cost = scourgeCount === 1
+        ? "Ideal: uses only 1 Scourge."
+        : `Works, but uses ${scourgeCount} Scourge — 1 Scourge + 2 Kyber is enough.`;
+      return { kind: "match", value: "SCOURGE", note: tieNote + cost };
     }
 
-    if (tiers[0] !== "SCOURGE") {
-      return {
-        kind: "warn",
-        value: "SCOURGE NOT GUARANTEED",
-        note: "The source only guarantees Scourge with the Scourge in Slot 1 (left tie-breaker against Stellar). Move the Scourge to Slot 1.",
-      };
+    if (scourgeCount > 0) {
+      const reason = tierOf(output).weight < tierOf("SCOURGE").weight
+        ? `${label} (Slot ${slot + 1}) is lower than Scourge and sets the result. Use Kyber as filler.`
+        : `${tieNote}Move the Scourge to the left of the Stellar, or use Kyber as filler.`;
+      return { kind: "fail", value: label.toUpperCase(), note: `Scourge lost. ${reason}` };
     }
 
-    const notes = {
-      1: "Ideal setup: saves 2/3 of your Scourge stock.",
-      2: "Reliable result, but uses 2 Scourge instead of 1.",
-      3: "Base-tier Scourge. Inefficient: uses 3 Scourge — prefer 1 Scourge + 2 Kyber/Stellar.",
-    };
-    return { kind: "match", value: scourgeCount === 3 ? "SCOURGE (BASE TIER)" : "SCOURGE EQUIVALENT", note: notes[scourgeCount] };
+    return { kind: "match", value: label.toUpperCase(), note: tieNote + `Lowest variant: ${label} (Slot ${slot + 1}).` };
   };
 
   const scInputs = [...document.querySelectorAll("[data-sc-slot]")];
@@ -441,11 +443,11 @@
   const scRows = document.getElementById("sc-rows");
 
   scTiers.forEach(select => {
-    select.innerHTML = `<option value="">— tier —</option>` +
+    select.innerHTML = `<option value="">— variant —</option>` +
       TIERS.map(t => `<option value="${t.id}">${t.label}</option>`).join("");
   });
 
-  // Optimal layout from docs/images/scourge-recipes.png: first component as Scourge anchor, the rest as Kyber/Stellar filler.
+  // Cheapest Scourge layout: one Scourge on the left, Kyber/Stellar filler on the right.
   const scourgeCellLabel = (component, index) => index === 0 ? `Scourge ${component}` : `Kyber/Stellar ${component}`;
 
   const renderScourge = () => {
@@ -455,21 +457,20 @@
     const matches = RECIPES.filter(r => recipeAccepts(r, selected));
 
     if (selected.length === 0) {
-      setResult(scResult, { label: "Result", value: "Select a component", note: "Tip: put the Scourge component in Slot 1." });
+      setResult(scResult, { label: "Result", value: "Select a component", note: "The lowest variant among the 3 slots decides the result." });
     } else if (matches.length === 0) {
       setResult(scResult, { kind: "random", label: "Combination not found", value: "RANDOM" });
     } else if (selected.length < 3) {
       setResult(scResult, { label: "Possible droids", value: `${matches.length} recipe${matches.length > 1 ? "s" : ""}` });
     } else if (tiers.some(t => !t)) {
       const d = matches[0];
-      setResult(scResult, { label: `Droid: ${d.name}`, value: "Choose each slot's tier", note: "The tier decides whether the result is Scourge." });
+      setResult(scResult, { label: `Droid: ${d.name}`, value: "Choose each slot's variant", note: "The lowest variant decides the result." });
     } else {
       const d = matches[0];
-      const tierResult = evaluateScourgeTier(tiers);
-      const isScourge = tierResult.kind === "match";
+      const tierResult = explainVariant(tiers);
       setResult(scResult, {
         kind: tierResult.kind,
-        label: `${isScourge ? "Scourge " : ""}${d.name} — ${d.rarity} ${d.type}`,
+        label: `${d.name} — ${d.rarity} ${d.type}`,
         value: tierResult.value,
         note: tierResult.note,
       });

@@ -12,7 +12,7 @@ Open the live link above, or open `index.html` in your browser. No build or depe
 
 Based on `docs/images/standard-recipes.png` (original 17 recipes) and `docs/images/standard-recipes-v3.png` (11 new recipes) — **28 recipes** in total, from Common to Mythic.
 
-Where the two sheets disagree, the app follows the public guides: `AXL-POD`, `SRV-0` and `LOW-MO` as Astromech. `BDX` is written `BDX EXPLORER` (its full in-game name).
+Names follow the [Droidex](https://droidex.dubtrackr.win/guides/droid-fusion/) (v1.40.0): `AXI-POD`, `SRV-O`. `LOW-MO` stays Astromech, as in the older public guides. `BDX` is written `BDX EXPLORER` (its full in-game name).
 
 - 3 boxes to enter components (with autocomplete).
 - Each component narrows the search: with `ARG` in Component 1, you get WHL-EX, ARM-CORE and every other recipe that uses ARG.
@@ -20,35 +20,30 @@ Where the two sheets disagree, the app follows the public guides: `AXL-POD`, `SR
 - Combination that doesn't exist → **RANDOM** result.
 - 3 components that form a recipe → shows the resulting droid.
 
-## V2 — "Scourge" tab ✅
+## V2 — "Variant & Scourge" tab ✅
 
-Based on `docs/images/scourge-rules.png` and `docs/images/scourge-recipes.png`.
+Calculates the **variant** (quality) of the fusion result. Based on the [Droidex fusion guide](https://droidex.dubtrackr.win/guides/droid-fusion/) (v1.40.0).
 
-The Scourge recipes are **the same recipes as V1**; what changes is each component's **tier**. So this tab reuses the same data (`RECIPES`) and only adds a tier selector per slot.
+The droid is decided by the components (same as V1). The variant follows one rule:
 
-Tiers: Scourge, Stellar, Kyber, Beskar, Rainbow, Diamond, Gold, Base.
+> The output takes the **lowest** input variant. On a **tie**, the **leftmost** slot wins.
 
-Applied rules (from the source document):
+Low to high: Default, Gold, Diamond, Rainbow, Beskar, Galactic, **Stellar = Scourge**, Kyber.
 
-1. **Slot 1 = Scourge (anchor).** Scourge ties with Stellar in rarity weight, and the leftmost slot breaks the tie. For the droid, position still doesn't matter; it only matters for the tier.
-2. **Slots 2 and 3: only Kyber, Stellar or Scourge.** Any lower tier (Base, Gold, Diamond, Rainbow, Beskar) triggers the lowest-tier rule and the result is not Scourge.
-3. **Ideal: 1 Scourge + 2 Kyber/Stellar.** Saves 2/3 of your Scourge stock. 3 Scourge gives a base-tier Scourge (inefficient).
+Because Scourge ranks with Stellar (below Kyber):
 
-Possible results in this tab:
-
-| Situation | Result |
+| Input (slot 1 + 2 + 3) | Result |
 |---|---|
-| Scourge in Slot 1 + Kyber/Stellar/Scourge in the others | Scourge Equivalent (or base tier with 3 Scourge) |
-| Any lower tier | Not Scourge |
-| No Scourge | Not Scourge |
-| Scourge present, but not in Slot 1 | Scourge not guaranteed (case not covered by the document) |
-| Components that don't form a recipe | RANDOM |
+| Scourge + Kyber + Kyber (any order) | Scourge — the cheapest way |
+| Scourge + Stellar + Stellar | Scourge (tie, Scourge is leftmost) |
+| Stellar + Scourge + Kyber | Stellar (tie, Stellar is leftmost) |
+| Scourge + Beskar + Kyber | Beskar (lowest) |
 
-> The tier rules follow the document and **have not been validated in-game yet**. The source only lists Scourge layouts for the original 17 recipes; the 11 new ones assume the same rules.
+> These rules come from a fan resource and **have not been validated in-game yet**. The first version of this tab followed `docs/images/scourge-rules.png`, which turned out to describe special cases of this rule — see [docs/variant-fusion.md](docs/variant-fusion.md).
 
 ## Structure
 
-- `index.html` — single page (HTML + CSS + vanilla JS), with Standard, Scourge and Credits tabs.
+- `index.html` — single page (HTML + CSS + vanilla JS), with Standard, Variant & Scourge and Credits tabs.
 - `docs/` — how it works and the logic behind each tab ([start here](docs/README.md)).
 - `docs/images/` — reference images from the source spreadsheet.
 

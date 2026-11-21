@@ -12,24 +12,24 @@ A fusion takes **3 components** and produces **1 droid**. There are 28 known rec
 | Rare | WHL-EX, ZRO-TEC, BTL-R |
 | Epic | N-UL, SCRP-R, ARM-CORE, OPT-AR, STRD-3, BI-BIT |
 | Legendary | RO-TOR, FUS-3, ORB-XL, QIK-BIT, TOR-Q, HV-EE |
-| Mythic | RIV-3T, LUG-G, X-ONK, SRV-0, AXL-POD, LOW-MO, AX-L, MO-TRO, SKM-MR, KL-NK |
+| Mythic | RIV-3T, LUG-G, X-ONK, SRV-O, AXI-POD, LOW-MO, AX-L, MO-TRO, SKM-MR, KL-NK |
 
 ### Conflict resolution
 
-The v3 sheet disagrees with the original sheet on a few fields. The app follows the **public guides** (all list the same original 17):
+The sheets and guides disagree on a few fields. The app follows the most recent public source, the [Droidex](https://droidex.dubtrackr.win/guides/droid-fusion/) (v1.40.0, the update that added the 11 new recipes):
 
-| Field | Original sheet + public guides | v3 sheet | Used |
-|---|---|---|---|
-| Name | AXL-POD | AXI-POD | AXL-POD |
-| Name | SRV-0 (zero) | SRV-O (letter) | SRV-0 |
-| LOW-MO type | Astromech | Worker | Astromech |
-| Component | BDX | BDX EXPLORER | BDX EXPLORER (public guides use the full name) |
+| Field | Original sheet + older guides | v3 sheet | Droidex v1.40.0 | Used |
+|---|---|---|---|---|
+| Name | AXL-POD | AXI-POD | AXI-POD | **AXI-POD** |
+| Name | SRV-0 (zero) | SRV-O (letter) | SRV-O | **SRV-O** |
+| LOW-MO type | Astromech | Worker | _(not stated)_ | **Astromech** |
+| Component | BDX | BDX EXPLORER | BDX EXPLORER | **BDX EXPLORER** |
 
-The 11 new recipes come only from the v3 sheet; no public guide listed them at the time (November 2026).
+The Droidex lists the same 28 recipes as the v3 sheet, with the same components.
 
 ### Not covered
 
-Public guides mention a separate mechanic: fusing **3 identical droids** to raise their rarity. The app does not model it.
+Fusions that aren't a named recipe (e.g. 3 identical droids raising variant or rarity) follow other rules in the game. The app shows RANDOM for them.
 
 ## Rules
 

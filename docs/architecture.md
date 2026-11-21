@@ -17,7 +17,7 @@ index.html
     ├── shared logic       normalize, countOf, recipeAccepts, highlightMask, readSlots, setResult, renderRows
     ├── tabs               show/hide panels
     ├── Standard tab       renderStandard
-    └── Scourge tab        TIERS, evaluateScourgeTier, renderScourge
+    └── Variant tab        TIERS, resolveVariant, explainVariant, renderScourge
 ```
 
 ## Single source of truth: `RECIPES`
@@ -26,7 +26,7 @@ index.html
 { name: "WHL-EX", rarity: "Rare", type: "Worker", components: ["ARG", "MOUSE", "MOUSE"] }
 ```
 
-The Scourge recipes in the source sheet are **the same recipes** as the standard ones; only the tier of each component changes. So there is no second recipe list. The Scourge tab reuses `RECIPES` and adds a tier layer on top.
+Both tabs use the same recipes; the Variant tab only adds the variant of each slot. So there is no second recipe list. The Variant tab reuses `RECIPES` and adds a variant layer on top.
 
 `ALL_COMPONENTS` is derived from `RECIPES` (unique, sorted). It feeds the autocomplete `<datalist>` and input validation, so adding a recipe automatically adds its components.
 
@@ -40,7 +40,7 @@ The Scourge recipes in the source sheet are **the same recipes** as the standard
 | `highlightMask(recipe, selected)` | Which recipe cells to highlight. Each selected component consumes one matching cell, so `ARG` highlights only one of two `ARG` cells. |
 | `readSlots(inputs)` | Read and normalize inputs; mark unknown components as `invalid` (red border). |
 | `setResult(el, …)` | Fill the result box (label, value, note) and set its color class. |
-| `renderRows(tbody, recipes, selected, cellLabel?)` | Render the recipe table. `cellLabel` is an optional formatter the Scourge tab uses to prefix tiers. |
+| `renderRows(tbody, recipes, selected, cellLabel?)` | Render the recipe table. `cellLabel` is an optional formatter the Variant tab uses to show the cheapest Scourge layout. |
 
 ## Rendering flow
 
@@ -60,8 +60,7 @@ There is no state object; the DOM inputs are the state. Each render recomputes e
 | _(none)_ | neutral | Waiting for input / partial match. |
 | `match` | green | A valid fusion result. |
 | `random` | red | Combination not in any recipe → random result in-game. |
-| `fail` | red | Scourge tab: the tiers ruin the Scourge outcome. |
-| `warn` | yellow | Scourge tab: outcome not guaranteed by the source. |
+| `fail` | red | Variant tab: a Scourge was in the input but another variant won. |
 
 ## Adding a recipe
 
