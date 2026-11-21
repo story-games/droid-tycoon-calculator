@@ -10,7 +10,7 @@ Open the live link above, or open `index.html` in your browser. No build or depe
 
 ## V1 — "Standard" tab ✅
 
-Based on `docs/v1.png` (17 standard fusion recipes).
+Based on `docs/images/standard-recipes.png` (17 standard fusion recipes).
 
 - 3 boxes to enter components (with autocomplete).
 - Each component narrows the search: with `ARG` in Component 1, you get WHL-EX, ARM-CORE and every other recipe that uses ARG.
@@ -20,7 +20,7 @@ Based on `docs/v1.png` (17 standard fusion recipes).
 
 ## V2 — "Scourge" tab ✅
 
-Based on `docs/v2.0.png` and `docs/v2.1.png`.
+Based on `docs/images/scourge-rules.png` and `docs/images/scourge-recipes.png`.
 
 The Scourge recipes are **the same 17 as V1**; what changes is each component's **tier**. So this tab reuses the same data (`RECIPES`) and only adds a tier selector per slot.
 
@@ -47,7 +47,8 @@ Possible results in this tab:
 ## Structure
 
 - `index.html` — single page (HTML + CSS + vanilla JS), with Standard, Scourge and Credits tabs.
-- `docs/` — reference images for the recipes and rules.
+- `docs/` — how it works and the logic behind each tab ([start here](docs/README.md)).
+- `docs/images/` — reference images from the source spreadsheet.
 
 ## Source
 

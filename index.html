@@ -216,7 +216,7 @@
     </table>
 
     <section class="rules">
-      <h2>Rules (source: docs/v2.0.png)</h2>
+      <h2>Rules (source: docs/images/scourge-rules.png)</h2>
       <ul>
         <li><strong>Slot 1 = Scourge.</strong> Scourge ties with Stellar in rarity weight; the leftmost slot breaks the tie.</li>
         <li><strong>Slots 2 and 3: only Kyber, Stellar or Scourge.</strong> Non-activated Kyber works. Base, Gold, Diamond, Rainbow or Beskar trigger the lowest-tier rule and ruin the Scourge.</li>
@@ -251,8 +251,8 @@
 </main>
 
 <script>
-  // ============ Shared data — source: docs/v1.png (Standard Fusion Recipes) ============
-  // Scourge recipes (docs/v2.1.png) are the same 17 recipes with a tier layer — do NOT duplicate.
+  // ============ Shared data — source: docs/images/standard-recipes.png (Standard Fusion Recipes) ============
+  // Scourge recipes (docs/images/scourge-recipes.png) are the same 17 recipes with a tier layer — do NOT duplicate.
   const RECIPES = [
     { name: "WHL-EX",   rarity: "Rare",      type: "Worker",    components: ["ARG", "MOUSE", "MOUSE"] },
     { name: "ZRO-TEC",  rarity: "Rare",      type: "Astromech", components: ["ID10", "ID10", "2BB"] },
@@ -369,7 +369,7 @@
     stdInputs[0].focus();
   });
 
-  // ============ Scourge tab (V2) — source: docs/v2.0.png + docs/v2.1.png ============
+  // ============ Scourge tab (V2) — source: docs/images/scourge-rules.png + docs/images/scourge-recipes.png ============
   const TIERS = [
     { id: "SCOURGE", label: "Scourge" },
     { id: "STELLAR", label: "Stellar" },
@@ -425,7 +425,7 @@
       TIERS.map(t => `<option value="${t.id}">${t.label}</option>`).join("");
   });
 
-  // Optimal layout from docs/v2.1.png: first component as Scourge anchor, the rest as Kyber/Stellar filler.
+  // Optimal layout from docs/images/scourge-recipes.png: first component as Scourge anchor, the rest as Kyber/Stellar filler.
   const scourgeCellLabel = (component, index) => index === 0 ? `Scourge ${component}` : `Kyber/Stellar ${component}`;
 
   const renderScourge = () => {
