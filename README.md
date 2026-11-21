@@ -1,4 +1,4 @@
-# Droid Tycoon Calculator
+# Droid Tycoon Calculator v2.1.0
 
 Droid fusion calculator for the Fortnite island Droid Tycoon.
 
