@@ -1,6 +1,6 @@
 # Standard fusion
 
-Sources: [images/standard-recipes.png](images/standard-recipes.png) (original 17) and [images/standard-recipes-v3.png](images/standard-recipes-v3.png) (11 new).
+Sources: [Star Wars Droid Tycoon - Fusion Recipes & Scourge Equivalents](https://docs.google.com/spreadsheets/d/1XHNAyen1vCPaDLuKN17lJYUkNHrCM-uXqtiDXD8O3Ls/edit?pli=1&gid=1#gid=1) (original 17) and the [Droidex fusion guide](https://droidex.dubtrackr.win/guides/droid-fusion/) (v1.40.0, 11 new).
 
 A fusion takes **3 components** and produces **1 droid**. There are 28 known recipes. Any other combination produces a random droid.
 

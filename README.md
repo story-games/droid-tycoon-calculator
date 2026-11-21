@@ -10,7 +10,7 @@ Open the live link above, or open `index.html` in your browser. No build or depe
 
 ## V1 — "Standard" tab ✅
 
-Based on `docs/images/standard-recipes.png` (original 17 recipes) and `docs/images/standard-recipes-v3.png` (11 new recipes) — **28 recipes** in total, from Common to Mythic.
+Based on the source spreadsheet and the [Droidex fusion guide](https://droidex.dubtrackr.win/guides/droid-fusion/) (v1.40.0) — **28 recipes** in total, from Common to Mythic.
 
 Names follow the [Droidex](https://droidex.dubtrackr.win/guides/droid-fusion/) (v1.40.0): `AXI-POD`, `SRV-O`. `LOW-MO` stays Astromech, as in the older public guides. `BDX` is written `BDX EXPLORER` (its full in-game name).
 
@@ -39,13 +39,12 @@ Because Scourge ranks with Stellar (below Kyber):
 | Stellar + Scourge + Kyber | Stellar (tie, Stellar is leftmost) |
 | Scourge + Beskar + Kyber | Beskar (lowest) |
 
-> These rules come from a fan resource and **have not been validated in-game yet**. The first version of this tab followed `docs/images/scourge-rules.png`, which turned out to describe special cases of this rule — see [docs/variant-fusion.md](docs/variant-fusion.md).
+> These rules come from a fan resource and **have not been validated in-game yet**. The first version of this tab followed the source spreadsheet's Scourge rules, which turned out to describe special cases of this rule — see [docs/variant-fusion.md](docs/variant-fusion.md).
 
 ## Structure
 
 - `index.html` — single page (HTML + CSS + vanilla JS), with Standard, Variant & Scourge and Credits tabs.
 - `docs/` — how it works and the logic behind each tab ([start here](docs/README.md)).
-- `docs/images/` — reference images from the source spreadsheet.
 
 ## Source
 

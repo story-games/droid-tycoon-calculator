@@ -80,7 +80,7 @@ The table shows the cheapest Scourge layout for each recipe: the first component
 
 ## History: why this tab was rewritten
 
-The first version followed [images/scourge-rules.png](images/scourge-rules.png), which described the Scourge case as three special rules (Scourge must be in Slot 1, filler must be Kyber/Stellar, 1 Scourge is optimal). Those rules are **special cases of the general rule above**, and they got two things wrong:
+The first version followed the Scourge rules of the source spreadsheet, which described the Scourge case as three special rules (Scourge must be in Slot 1, filler must be Kyber/Stellar, 1 Scourge is optimal). Those rules are **special cases of the general rule above**, and they got two things wrong:
 
 - "Scourge must be in Slot 1" is only true when Stellar is present. With Kyber filler, any position works.
 - It only answered "Scourge or not"; it ignored Galactic and couldn't tell which variant you actually get.
