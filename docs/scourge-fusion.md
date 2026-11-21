@@ -13,7 +13,9 @@ A Scourge fusion answers two separate questions, and the code keeps them separat
 | **Which droid?** (species) | The components, same as the [Standard tab](standard-fusion.md) | No |
 | **Which quality?** (tier) | The tier of each slot | **Yes** |
 
-The Scourge recipes are the same 17 recipes as the standard ones. That is why the tab reuses `RECIPES` and only adds a tier selector per slot.
+The Scourge recipes are the same recipes as the standard ones. That is why the tab reuses `RECIPES` and only adds a tier selector per slot.
+
+The source only shows Scourge layouts for the original 17 recipes. The 11 new recipes (see [standard-fusion.md](standard-fusion.md)) are shown in this tab assuming the same tier rules apply.
 
 ## Tiers
 

@@ -14,6 +14,7 @@ The images in [`images/`](images/) are snapshots of the source spreadsheet ([Sta
 
 | Image | Content |
 |---|---|
-| [standard-recipes.png](images/standard-recipes.png) | The 17 standard fusion recipes. |
+| [standard-recipes.png](images/standard-recipes.png) | The original 17 standard fusion recipes. |
+| [standard-recipes-v3.png](images/standard-recipes-v3.png) | Updated sheet with 28 recipes (11 new, including Common rarity and Protocol type). |
 | [scourge-rules.png](images/scourge-rules.png) | Scourge input mix patterns and the three optimal fusion rules. |
-| [scourge-recipes.png](images/scourge-recipes.png) | The 17 recipes laid out as 1x Scourge anchor + 2x Kyber/Stellar filler. |
+| [scourge-recipes.png](images/scourge-recipes.png) | The original 17 recipes laid out as 1x Scourge anchor + 2x Kyber/Stellar filler. |

@@ -26,7 +26,7 @@ index.html
 { name: "WHL-EX", rarity: "Rare", type: "Worker", components: ["ARG", "MOUSE", "MOUSE"] }
 ```
 
-The Scourge recipes in the source sheet are **the same 17 recipes** as the standard ones; only the tier of each component changes. So there is no second recipe list. The Scourge tab reuses `RECIPES` and adds a tier layer on top.
+The Scourge recipes in the source sheet are **the same recipes** as the standard ones; only the tier of each component changes. So there is no second recipe list. The Scourge tab reuses `RECIPES` and adds a tier layer on top.
 
 `ALL_COMPONENTS` is derived from `RECIPES` (unique, sorted). It feeds the autocomplete `<datalist>` and input validation, so adding a recipe automatically adds its components.
 
@@ -51,7 +51,7 @@ Both tabs follow the same cycle on every `input`/`change` event:
 3. Decide the result state and call `setResult`.
 4. Re-render the table with the matches (or all recipes when nothing is selected).
 
-There is no state object; the DOM inputs are the state. Each render recomputes everything from scratch, which is trivial for 17 recipes.
+There is no state object; the DOM inputs are the state. Each render recomputes everything from scratch, which is trivial for 28 recipes.
 
 ## Result states (CSS classes)
 

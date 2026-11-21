@@ -10,7 +10,9 @@ Open the live link above, or open `index.html` in your browser. No build or depe
 
 ## V1 — "Standard" tab ✅
 
-Based on `docs/images/standard-recipes.png` (17 standard fusion recipes).
+Based on `docs/images/standard-recipes.png` (original 17 recipes) and `docs/images/standard-recipes-v3.png` (11 new recipes) — **28 recipes** in total, from Common to Mythic.
+
+Where the two sheets disagree, the app follows the public guides: `AXL-POD`, `SRV-0` and `LOW-MO` as Astromech. `BDX` is written `BDX EXPLORER` (its full in-game name).
 
 - 3 boxes to enter components (with autocomplete).
 - Each component narrows the search: with `ARG` in Component 1, you get WHL-EX, ARM-CORE and every other recipe that uses ARG.
@@ -22,7 +24,7 @@ Based on `docs/images/standard-recipes.png` (17 standard fusion recipes).
 
 Based on `docs/images/scourge-rules.png` and `docs/images/scourge-recipes.png`.
 
-The Scourge recipes are **the same 17 as V1**; what changes is each component's **tier**. So this tab reuses the same data (`RECIPES`) and only adds a tier selector per slot.
+The Scourge recipes are **the same recipes as V1**; what changes is each component's **tier**. So this tab reuses the same data (`RECIPES`) and only adds a tier selector per slot.
 
 Tiers: Scourge, Stellar, Kyber, Beskar, Rainbow, Diamond, Gold, Base.
 
@@ -42,7 +44,7 @@ Possible results in this tab:
 | Scourge present, but not in Slot 1 | Scourge not guaranteed (case not covered by the document) |
 | Components that don't form a recipe | RANDOM |
 
-> The tier rules follow the document and **have not been validated in-game yet**.
+> The tier rules follow the document and **have not been validated in-game yet**. The source only lists Scourge layouts for the original 17 recipes; the 11 new ones assume the same rules.
 
 ## Structure
 

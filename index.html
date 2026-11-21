@@ -12,6 +12,7 @@
     --accent: #dfe3fa;
     --text: #1d2233;
     --muted: #6b7290;
+    --common: #6b7280;
     --rare: #3b82f6;
     --epic: #a855f7;
     --legendary: #f59e0b;
@@ -101,6 +102,7 @@
   td.hit { background: #fef9c3; font-weight: 700; }
   td.anchor { font-weight: 700; }
   .rarity { font-weight: 700; }
+  .rarity.Common { color: var(--common); }
   .rarity.Rare { color: var(--rare); }
   .rarity.Epic { color: var(--epic); }
   .rarity.Legendary { color: var(--legendary); }
@@ -251,26 +253,44 @@
 </main>
 
 <script>
-  // ============ Shared data — source: docs/images/standard-recipes.png (Standard Fusion Recipes) ============
-  // Scourge recipes (docs/images/scourge-recipes.png) are the same 17 recipes with a tier layer — do NOT duplicate.
+  // ============ Shared data ============
+  // Sources: docs/images/standard-recipes.png (original 17) + docs/images/standard-recipes-v3.png (11 new).
+  // Conflicts between the sheets follow the public guides: AXL-POD, SRV-0 and LOW-MO = Astromech.
+  // Scourge recipes (docs/images/scourge-recipes.png) reuse this list with a tier layer — do NOT duplicate.
   const RECIPES = [
+    // Common (v3)
+    { name: "ION PROBE",   rarity: "Common",    type: "Worker",    components: ["MOUSE", "MOUSE", "ID10"] },
+    { name: "QUAD SENTRY", rarity: "Common",    type: "Astromech", components: ["R5", "R5", "ID10"] },
+    { name: "LFT-3R",      rarity: "Common",    type: "Battle",    components: ["IMPERIAL PROBE", "IMPERIAL PROBE", "GONK"] },
+    // Rare
     { name: "WHL-EX",   rarity: "Rare",      type: "Worker",    components: ["ARG", "MOUSE", "MOUSE"] },
     { name: "ZRO-TEC",  rarity: "Rare",      type: "Astromech", components: ["ID10", "ID10", "2BB"] },
-    { name: "BTL-R",    rarity: "Rare",      type: "Battle",    components: ["R9", "BDX", "B1 BATTLE"] },
+    { name: "BTL-R",    rarity: "Rare",      type: "Battle",    components: ["R9", "BDX EXPLORER", "B1 BATTLE"] },
+    // Epic
     { name: "N-UL",     rarity: "Epic",      type: "Worker",    components: ["B1 HEAVY", "GUNRUNNER", "BB"] },
     { name: "SCRP-R",   rarity: "Epic",      type: "Astromech", components: ["GONK", "GROUNDMECH", "R6"] },
     { name: "ARM-CORE", rarity: "Epic",      type: "Battle",    components: ["ARG", "ARG", "B2 HEAVY"] },
     { name: "OPT-AR",   rarity: "Epic",      type: "Battle",    components: ["R2", "R2", "B2 SUPER"] },
+    { name: "STRD-3",   rarity: "Epic",      type: "Worker",    components: ["SENATE HOVERCAM", "SENATE HOVERCAM", "MPH"] },
+    { name: "BI-BIT",   rarity: "Epic",      type: "Astromech", components: ["R9", "R9", "EGL"] },
+    // Legendary
     { name: "RO-TOR",   rarity: "Legendary", type: "Worker",    components: ["BB9", "PIT", "B1 BATTLE"] },
     { name: "FUS-3",    rarity: "Legendary", type: "Worker",    components: ["R7", "B-U4D", "B-U4D"] },
     { name: "ORB-XL",   rarity: "Legendary", type: "Battle",    components: ["CB", "GUNRUNNER", "B2-RP"] },
     { name: "QIK-BIT",  rarity: "Legendary", type: "Astromech", components: ["GROUNDMECH", "GROUNDMECH", "BB9"] },
+    { name: "TOR-Q",    rarity: "Legendary", type: "Battle",    components: ["KT", "KT", "B2-RP"] },
+    { name: "HV-EE",    rarity: "Legendary", type: "Astromech", components: ["JO9-4MN", "BB9", "BB9"] },
+    // Mythic
     { name: "RIV-3T",   rarity: "Mythic",    type: "Worker",    components: ["KX", "IG", "RIC"] },
     { name: "LUG-G",    rarity: "Mythic",    type: "Worker",    components: ["LOADLIFTER", "ID10", "R5"] },
     { name: "X-ONK",    rarity: "Mythic",    type: "Battle",    components: ["KX", "KX", "GONK"] },
     { name: "SRV-0",    rarity: "Mythic",    type: "Battle",    components: ["RIC-1200", "B1 HEAVY", "B1 HEAVY"] },
-    { name: "AXL-POD",  rarity: "Mythic",    type: "Astromech", components: ["RIC", "BDX", "R7"] },
+    { name: "AXL-POD",  rarity: "Mythic",    type: "Astromech", components: ["RIC", "BDX EXPLORER", "R7"] },
     { name: "LOW-MO",   rarity: "Mythic",    type: "Astromech", components: ["A-LT", "A-LT", "LOADLIFTER"] },
+    { name: "AX-L",     rarity: "Mythic",    type: "Battle",    components: ["MPH", "IG", "IG"] },
+    { name: "MO-TRO",   rarity: "Mythic",    type: "Astromech", components: ["A-LT", "A-LT", "ECG"] },
+    { name: "SKM-MR",   rarity: "Mythic",    type: "Astromech", components: ["A-LT", "A-LT", "SNOW MOUSE"] },
+    { name: "KL-NK",    rarity: "Mythic",    type: "Protocol",  components: ["PZ", "PZ", "RIC"] },
   ];
 
   const ALL_COMPONENTS = [...new Set(RECIPES.flatMap(r => r.components))].sort();
